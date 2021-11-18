@@ -4,9 +4,9 @@ using System.Text;
 
 namespace ValutaAPI
 {
-    public class ValutaKurs
+    public class ExchangeRate
     {
-        public ValutaKurs(int? id, string fromCurrency, string toCurrency, DateTime updatedAt, decimal rate)
+        public ExchangeRate(int? id, string fromCurrency, string toCurrency, DateTime updatedAt, decimal rate)
         {
             Id = id;
             FromCurrency = fromCurrency;

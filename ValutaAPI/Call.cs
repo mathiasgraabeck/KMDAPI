@@ -11,11 +11,11 @@ namespace ValutaAPI
 {
     public class Call
     {
-        // reads all from ValutaKurser
+        // reads all from ValutaKurser (ExchangeRate) table
         // takes a connection string
-        public static ValutaKurs[] ReadSQL(string connectionString)
+        public ExchangeRate[] ReadSQL(string connectionString)
         {
-            List<ValutaKurs> queryRes = new List<ValutaKurs>();
+            List<ExchangeRate> queryRes = new List<ExchangeRate>();
 
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
@@ -26,16 +26,16 @@ namespace ValutaAPI
 
             while (dr.Read())
             {
-                queryRes.Add(new ValutaKurs(dr.GetInt32(0), dr.GetString(1), dr.GetString(2), dr.GetDateTime(3), dr.GetDecimal(4)));
+                queryRes.Add(new ExchangeRate(dr.GetInt32(0), dr.GetString(1), dr.GetString(2), dr.GetDateTime(3), dr.GetDecimal(4)));
             }
 
             con.Close();
             return queryRes.ToArray();
         }
 
-        // reads from https://valutakurser.azurewebsites.net/ValutaKurs and returns the result in a ValutaKurs array
+        // reads from https://valutakurser.azurewebsites.net/ValutaKurs and returns the result in a ExchangeRate array
 
-        public static ValutaKurs[] WebAPI()
+        public ExchangeRate[] WebAPI()
         {
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create("https://valutakurser.azurewebsites.net/ValutaKurs");
 
@@ -51,19 +51,19 @@ namespace ValutaAPI
             JArray toCurrencies = new JArray(json.Values("toCurrency"));
             JArray rates = new JArray(json.Values("rate"));
 
-            //saml JArrays i ValutaKurs array
-            ValutaKurs[] valutaKurserArr = new ValutaKurs[rates.Count];
+            //join JArrays in ExchangeRate array
+            ExchangeRate[] exchangeRateArr = new ExchangeRate[rates.Count];
 
             for (int i = 0; i < rates.Count; i++)
             {
-                valutaKurserArr[i] = new ValutaKurs(null, "DKK", (string)toCurrencies[i], updatedAt, (decimal)rates[i]);
+                exchangeRateArr[i] = new ExchangeRate(null, "DKK", (string)toCurrencies[i], updatedAt, (decimal)rates[i]);
             }
            
-            return valutaKurserArr;
+            return exchangeRateArr;
         }
 
-        
-        public static void WriteSQL(ValutaKurs[] valutaKurserArr, string connectionString)
+        //inserts a all values in an ExchangeRate array into ValutaKurser (ExchangeRate) table
+        public void WriteSQL(ExchangeRate[] valutaKurserArr, string connectionString)
         {
             SqlConnection con = new SqlConnection(connectionString);
 
