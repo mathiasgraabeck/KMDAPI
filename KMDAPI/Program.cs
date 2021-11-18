@@ -12,7 +12,7 @@ namespace KMDAPI
     {
         static void Main(string[] args)
         {
-            string connectionString = "Server=52.157.108.214;Database=Mathias;User Id=Mathias;Password=TestCase;";
+            string connectionString = "";
             ReadSQL(connectionString);
             //WebAPI(connectionString);
         }
