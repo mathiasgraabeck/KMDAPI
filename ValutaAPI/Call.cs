@@ -56,7 +56,7 @@ namespace ValutaAPI
 
             for (int i = 0; i < rates.Count; i++)
             {
-                exchangeRateArr[i] = new ExchangeRate(null, "DKK", (string)toCurrencies[i], updatedAt, (decimal)rates[i]);
+                exchangeRateArr[i] = new ExchangeRate(null, "DKK", (string)toCurrencies[i], updatedAt, (decimal)rates[i]); // id is null because the data server keeps track of keys itself
             }
            
             return exchangeRateArr;
